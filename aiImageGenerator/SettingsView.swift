@@ -88,7 +88,7 @@ struct SettingsView: View {
                                 .listRowBackground(Color.bgTertiary)
                                 .listRowSeparatorTint(.lQuoternary.opacity(0.4))
                                 .onTapGesture {
-                                    if let url = URL(string: "https://google.com") {
+                                    if let url = URL(string: "https://www.termsfeed.com/live/4fbbc944-bde1-4838-b9f5-6e7bc1e57fc7") {
                                         UIApplication.shared.open(url)
                                     }
                                 }
@@ -96,7 +96,7 @@ struct SettingsView: View {
                                 .contentShape(Rectangle())
                                 .listRowBackground(Color.bgTertiary)
                                 .onTapGesture {
-                                    if let url = URL(string: "https://google.com") {
+                                    if let url = URL(string: "https://www.termsfeed.com/live/7974e771-4820-407e-a996-f77ab94a440d") {
                                         UIApplication.shared.open(url)
                                     }
                                 }
