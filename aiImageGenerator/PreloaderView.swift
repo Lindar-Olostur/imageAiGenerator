@@ -2,7 +2,7 @@
 //  PreloaderView.swift
 //  aiImageGenerator
 //
-//  Created by Lindar Olostur on 08.09.2024.
+//
 //
 
 import SwiftUI
@@ -18,9 +18,8 @@ struct PreloaderView: View {
         NavigationStack {
             ZStack {
                 Color.bgPrimary.ignoresSafeArea()
-                Rectangle()
-//                Image("startLogo")
-//                    .resizable()
+                Image("preLogo")
+                    .resizable()
                     .frame(width: 150, height: 150)
                 VStack {
                     Spacer()
