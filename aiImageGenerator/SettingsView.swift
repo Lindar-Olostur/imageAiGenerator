@@ -140,6 +140,9 @@ struct SettingsView: View {
                 }
             }
         }
+        .onAppear {
+            checkNotificationStatus()
+        }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
             checkNotificationStatus()
         }
