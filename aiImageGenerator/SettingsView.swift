@@ -15,6 +15,9 @@ struct SettingsView: View {
     @State private var isShareSheetShowing = false
     @Environment(\.presentationMode) var presentationMode
     @State var notifStatus = false
+    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Неизвестная версия"
+    let appBuild = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Неизвестная сборка"
+
     
     var body: some View {
         VStack {
@@ -107,7 +110,7 @@ struct SettingsView: View {
                     .environment(\.defaultMinListRowHeight, 60)
                     .listSectionSpacing(20)
                 }
-                Text("App Version: 1.0.0")
+                Text("App Version: \(appVersion).\(appBuild)")
                     .foregroundColor(.lTertiary)
                     .font(.footnote)
                     .padding(.bottom, 15)

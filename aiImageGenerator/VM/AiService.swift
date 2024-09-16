@@ -91,8 +91,6 @@ class AiService: ObservableObject {
                     let rootResponse = try decoder.decode(RootResponse.self, from: data)
                     
                     if !rootResponse.data.result.isEmpty {
-                        //print(rootResponse.data)
-                        
                         Task {
                             var newImages = [Picture]()
                             
@@ -117,9 +115,12 @@ class AiService: ObservableObject {
                                 }
                             }
                             
-                            DispatchQueue.main.async {
-                                self.genImages = newImages
-                                self.progress = 1.0
+                            // Проверяем, что в массиве ровно 4 картинки
+                            if newImages.count == 4 {
+                                DispatchQueue.main.async {
+                                    self.genImages = newImages
+                                    self.progress = 1.0
+                                }
                             }
                         }
                         
@@ -139,13 +140,14 @@ class AiService: ObservableObject {
             try? await Task.sleep(nanoseconds: 5 * 1_000_000_000)
         }
     }
+
     
     func startProgressSimulation() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
-                if self.progress < Double.random(in: 0.91...0.99) {
+                if self.progress < Double.random(in: 0.62...0.99) {
                     self.progress += Double.random(in: 0.001...0.008)
                 }
             }
