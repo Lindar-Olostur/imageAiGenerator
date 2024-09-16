@@ -119,12 +119,12 @@ class UserSettings: ObservableObject {
         //        UserDefaults.standard.set(password, forKey: "password")
         //        UserDefaults.standard.set(email, forKey: "email")
     }
-    func addImage(url: URL, prompt: String, negativePrompt: String, width: Int, height: Int, isUpscaled: Bool, model: String, ratio: String) {
+    func addImage(url: URL, prompt: String, negativePrompt: String, size: String, isUpscaled: Bool, model: String, ratio: String) {
         let picture = Picture(
             url: url,
             prompt: prompt,
             negativePrompt: negativePrompt,
-            size: "\(width) x \(height)",
+            size: size,
             isUpscaled: isUpscaled,
             model: model,
             ratio: ratio

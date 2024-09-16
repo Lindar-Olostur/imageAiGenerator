@@ -81,11 +81,13 @@ struct ImageDetailView: View {
                                                 showToast = true
                                             }
                                         } else {
-                                            DispatchQueue.main.async {
-                                                userSettings.addImage(url: imageUrl, prompt: "", negativePrompt: "", width: 1, height: 1, isUpscaled: false, model: "", ratio: "")
+                                            if let pic = picture {
+                                                DispatchQueue.main.async {
+                                                    userSettings.addImage(url: pic.url, prompt: pic.prompt, negativePrompt: pic.negativePrompt, size: pic.size, isUpscaled: pic.isUpscaled, model: pic.model, ratio: pic.ratio)
+                                                }
+                                                toastText = "Added to “Profile”"
+                                                animateToast()
                                             }
-                                            toastText = "Added to “Profile”"
-                                            animateToast()
                                         }
                                     } label: {
                                         ZStack {
