@@ -1,10 +1,3 @@
-//
-//  SubscriptionService.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 12.09.2024.
-//
-
 import Foundation
 import ApphudSDK
 import SwiftUI
@@ -20,8 +13,6 @@ final class SubscriptionService: ObservableObject {
     @Published var hasSubs: Bool
     @Published var activeSubscription: Bool = false
     @Published var availableProducts: [ApphudProduct] = []
-    
-    //@Published var choosenProduct = Product.m3.rawValue
     
     static let shared = SubscriptionService()
     
@@ -53,7 +44,6 @@ final class SubscriptionService: ObservableObject {
     
     
     // Оформление подписки
- //   @MainActor
     func purchase(productId: String) async {
         print("Attempting to purchase product with ID: \(productId)")
         do {

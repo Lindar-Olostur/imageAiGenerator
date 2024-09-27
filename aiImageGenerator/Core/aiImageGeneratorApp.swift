@@ -1,16 +1,9 @@
-//
-//  aiImageGeneratorApp.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 06.09.2024.
-//
-
 import SwiftUI
 import ApphudSDK
 
 @main
 struct aiImageGeneratorApp: App {
-    @StateObject var userSettings = UserSettings()
+    @StateObject var viewModel = ViewModel()
     @StateObject var imageLoader = ImageLoader()
     @StateObject var aiGeneratorService = AiService()
     
@@ -20,17 +13,16 @@ struct aiImageGeneratorApp: App {
     }
     
     var body: some Scene {
-        
         WindowGroup {
             VStack {
-                if userSettings.isPreloaderVisible /*|| webManager.isLoading*/ {
-                    PreloaderView()
+                if viewModel.isStartScreenVisible {
+                    StartView()
                 } else {
-                    TabsView()
+                    TabBarView()
                 }
             }
             .environmentObject(aiGeneratorService)
-            .environmentObject(userSettings)
+            .environmentObject(viewModel)
             .environmentObject(imageLoader)
             .preferredColorScheme(.dark)
         }

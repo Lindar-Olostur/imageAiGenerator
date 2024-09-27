@@ -1,10 +1,3 @@
-//
-//  ServerModel.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 10.09.2024.
-//
-
 import Foundation
 
 // Главная модель для JSON ответа
@@ -35,6 +28,6 @@ struct RequestObject: Codable {
 // Модель для объекта "result" (пока пустой, так как результат ещё не пришёл)
 struct ResultObject: Codable {
     let id: String
-      let url: String
+    let url: String
 }
 

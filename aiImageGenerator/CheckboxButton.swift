@@ -1,10 +1,3 @@
-//
-//  CheckboxButton.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 09.09.2024.
-//
-
 import SwiftUI
 
 struct CheckboxButton: View {
@@ -21,7 +14,6 @@ struct CheckboxButton: View {
         } label: {
             
             HStack {
-                // Круг с обводкой
                 Circle()
                     .stroke(isChecked == isActive ? Color.cPrimaryLight : Color.lQuintuple, lineWidth: 2)
                     .frame(width: 24, height: 24)
@@ -32,7 +24,6 @@ struct CheckboxButton: View {
                             .frame(width: 16, height: 16)
                     )
                 
-                // Текст слева
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Text(period.rawValue)
@@ -67,14 +58,13 @@ struct CheckboxButton: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 10)
-            .background(isChecked == isActive ? Color.bgQuoternary : Color.bgTertiary)  // Фон элемента
+            .background(isChecked == isActive ? Color.bgQuoternary : Color.bgTertiary)
             .cornerRadius(15)
             .overlay(
                 RoundedRectangle(cornerRadius: 15)
                     .stroke(Color.cPrimaryLight, lineWidth: isChecked == isActive ? 1 : 0)
             )
             .padding(.horizontal)
-            //.background(Color.black)
         }
     }
 }

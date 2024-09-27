@@ -1,10 +1,3 @@
-//
-//  Model.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import Foundation
 import UIKit
 

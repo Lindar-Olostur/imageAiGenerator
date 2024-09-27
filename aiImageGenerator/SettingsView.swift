@@ -1,17 +1,10 @@
-//
-//  SettingsView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 12.09.2024.
-//
-
 import SwiftUI
 import StoreKit
 import UserNotifications
 
 struct SettingsView: View {
     @Environment(\.scenePhase) private var scenePhase
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     @State private var isShareSheetShowing = false
     @Environment(\.presentationMode) var presentationMode
     @State var notifStatus = false
@@ -26,7 +19,7 @@ struct SettingsView: View {
                     .ignoresSafeArea()
                 VStack {
                     Text("Settings")
-                        .headerStyle(alignment: .center)
+                        .bigTextStyle(alignment: .center)
                         .padding(.top, 75)
                     List {
                         if !SubscriptionService.shared.hasSubs {
@@ -122,11 +115,10 @@ struct SettingsView: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
                             DispatchQueue.main.async {
-                                if userSettings.testProgress {
-                                    //presentationMode.wrappedValue.dismiss()
-                                    userSettings.testProgress = false
+                                if viewModel.testProgress {
+                                    viewModel.testProgress = false
                                 }
-                                userSettings.openPaywall.toggle()
+                                viewModel.openPaywall.toggle()
                             }
                         } label: {
                             HStack {
@@ -137,7 +129,7 @@ struct SettingsView: View {
                                     .bold()
                             }
                         }
-                        .buttonStyle(BigButton(width: 72, height: 24, opacity: 0.0))
+                        .buttonStyle(MainButton(width: 72, height: 24, opacity: 0.0))
                         .scaleEffect(0.8)
                     }
                 }
@@ -182,7 +174,7 @@ struct SettingsView: View {
 
 #Preview {
     SettingsView()
-        .environmentObject(UserSettings())
+        .environmentObject(ViewModel())
 }
 
 

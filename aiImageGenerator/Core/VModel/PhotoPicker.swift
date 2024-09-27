@@ -1,10 +1,3 @@
-//
-//  PhotoPicker.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 12.09.2024.
-//
-
 import SwiftUI
 import PhotosUI
 

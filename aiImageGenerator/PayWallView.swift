@@ -1,20 +1,14 @@
-//
-//  PayWallView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 
 struct PayWallView: View {
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentationMode
     @State var isYearProduct = false
     let isTrial = true
+    
     var body: some View {
         ZStack {
-            OnboardingTemplate(showblur: false)
+            Color.bgPrimary.ignoresSafeArea()
             VStack {
                 Image("paywall")
                     .resizable()
@@ -35,13 +29,11 @@ struct PayWallView: View {
             VStack(alignment: .center) {
                 HStack {
                     Button {
-                        if userSettings.isOnboardingCompleted {
-                          //  print("OB - comp")
-                            userSettings.openPaywall = false
+                        if viewModel.isOBoardingFinished {
+                            viewModel.openPaywall = false
                             presentationMode.wrappedValue.dismiss()
                         } else {
-                         //   print("OB - NOT comp")
-                            userSettings.finishOB()
+                            viewModel.finishOB()
                             presentationMode.wrappedValue.dismiss()
                         }
                     } label: {
@@ -56,7 +48,7 @@ struct PayWallView: View {
                     .padding()
                     Spacer()
                     Button {
-                        userSettings.finishOB()
+                        viewModel.finishOB()
                         Task {
                             await SubscriptionService.shared.restorePurchases()
                         }
@@ -87,7 +79,7 @@ struct PayWallView: View {
                                 .bold()
                         }
                     }
-                    .buttonStyle(BigButton(width: 72, height: 26))
+                    .buttonStyle(MainButton(width: 72, height: 26))
                     .disabled(true)
                     .scaleEffect(0.8)
                 }
@@ -108,7 +100,7 @@ struct PayWallView: View {
                 CheckboxButton(isChecked: $isYearProduct, isActive: true, isTrial: isTrial, period: .yearly, priseFull: "$39.99", priseWeek: "$1.87")
                     .padding(.bottom, 8)
                 Button {
-                    userSettings.finishOB()
+                    viewModel.finishOB()
                     Task {
                         await SubscriptionService.shared.purchase(productId: sendProduct().rawValue)
                     }
@@ -116,7 +108,7 @@ struct PayWallView: View {
                     Text("Continue")
                         .font(.system(size: 17))
                 }
-                .buttonStyle(BigButton(width: .infinity, height: 38))
+                .buttonStyle(MainButton(width: .infinity, height: 38))
                 .padding()
                 HStack {
                     Button { 

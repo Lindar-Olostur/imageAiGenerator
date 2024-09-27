@@ -1,15 +1,8 @@
-//
-//  Tip.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 09.09.2024.
-//
-
 import Foundation
 import TipKit
 
 struct InlineTip: Tip {
-    // Parameters-Rules
+    
     @Parameter
     static var alreadyDiscovered: Bool = false
     
@@ -33,7 +26,7 @@ struct InlineTip: Tip {
 }
 
 struct InlineTip2: Tip {
-    /// Parameters-Rules
+    
     @Parameter
     static var alreadyDiscovered: Bool = false
     

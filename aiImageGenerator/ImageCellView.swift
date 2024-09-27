@@ -1,16 +1,8 @@
-//
-//  ImageCellView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 
 struct ImageCellView: View {
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     var picture: Picture?
-   // let url: URL?
 
     var body: some View {
         ZStack {
@@ -30,12 +22,12 @@ struct ImageCellView: View {
                                         .padding(2)
                                 }
                                 Spacer()
-                                if userSettings.checkCollection(url: url) {
+                                if viewModel.checkCollection(url: url) {
                                     ZStack {
                                         BlurView(style: .systemUltraThinMaterial)
-                                        Image(systemName: userSettings.checkCollection(url: url) ? "heart.fill" : "heart")
+                                        Image(systemName: viewModel.checkCollection(url: url) ? "heart.fill" : "heart")
                                             .font(.system(size: 20))
-                                            .foregroundColor(userSettings.checkCollection(url: url) ? .cRed : .lQuoternary)
+                                            .foregroundColor(viewModel.checkCollection(url: url) ? .cRed : .lQuoternary)
                                     }
                                     .frame(width: 36, height: 36)
                                     .cornerRadius(6, corners: .allCorners)
@@ -51,13 +43,6 @@ struct ImageCellView: View {
                     .aspectRatio(1, contentMode: .fit)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .clipped()
-//                    .overlay(
-//                        RoundedRectangle(cornerRadius: 10)
-//                            .stroke(Color(red: 19/255, green: 21/255, blue: 28/255, opacity: 0.2), lineWidth: 1)
-//                            .shadow(color: Color(red: 19/255, green: 21/255, blue: 28/255, opacity: 0.2), radius: 2, x: -1, y: -1)
-//                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                    )
-                    
                 }
             } else {
                 ZStack {
@@ -82,5 +67,5 @@ struct ImageCellView: View {
 
 #Preview {
     ImageCellView(picture: Picture(url: URL(string: "https://via.placeholder.com/300")!, prompt: "", negativePrompt: "Negative Negative", size: "480 x 480", isUpscaled: false, model: "Art", ratio: "1:1 - landscape"))
-        .environmentObject(UserSettings())
+        .environmentObject(ViewModel())
 }

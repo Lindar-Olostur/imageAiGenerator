@@ -1,14 +1,7 @@
-//
-//  EmptyCollectionView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 10.09.2024.
-//
-
 import SwiftUI
 
 struct EmptyCollectionView: View {
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     var body: some View {
         VStack {
             Image(systemName: "photo.stack")
@@ -29,7 +22,7 @@ struct EmptyCollectionView: View {
                 .padding(.bottom, 20)
             
             Button(action: {
-                userSettings.selectedTab = .create
+                viewModel.selectedTab = .create
             }) {
                 HStack {
                     Image(systemName: "plus")
@@ -37,7 +30,7 @@ struct EmptyCollectionView: View {
                         .font(.system(size: 17))
                 }
             }
-            .buttonStyle(BigButton(width: 108, height: 38))
+            .buttonStyle(MainButton(width: 108, height: 38))
             Spacer()
         }
         .padding()
@@ -65,5 +58,5 @@ struct EmptyCollectionView: View {
 
 #Preview {
     EmptyCollectionView()
-        .environmentObject(UserSettings())
+        .environmentObject(ViewModel())
 }

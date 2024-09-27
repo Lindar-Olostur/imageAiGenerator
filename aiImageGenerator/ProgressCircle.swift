@@ -1,10 +1,3 @@
-//
-//  ProgressCircle.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 10.09.2024.
-//
-
 import SwiftUI
 
 struct ProgressCircle: View {

@@ -1,18 +1,9 @@
-//
-//  ImageGalleryView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 
 struct ImageGalleryView: View {
-//    @EnvironmentObject var imageLoader: ImageLoader
     @State var pictures: [Picture] = []
 
     var body: some View {
-//        NavigationStack {
             VStack {
                 VStack {
                     ScrollView(showsIndicators: false) {
@@ -28,11 +19,10 @@ struct ImageGalleryView: View {
                 }
             }
             .background(Color.clear)
-//        }
     }
 }
 
 
 #Preview {
-    ImageGalleryView()//.environmentObject(ImageLoader())
+    ImageGalleryView()
 }

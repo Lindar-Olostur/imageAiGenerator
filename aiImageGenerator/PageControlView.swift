@@ -1,10 +1,3 @@
-//
-//  PageControlView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 06.09.2024.
-//
-
 import SwiftUI
 
 struct PageControlView: View {

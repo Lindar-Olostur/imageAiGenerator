@@ -1,23 +1,11 @@
-//
-//  AiService.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 10.09.2024.
-//
-
 import Foundation
 
 class AiService: ObservableObject {
     @Published var progress: Double = 0.0
-//    {
-//        didSet {
-//            print(progress)
-//        }
-//    }
-    var timer: Timer?
     @Published var genImages: [Picture] = []
     @Published var generatedImageData: [ResultObject] = []
     @Published var errorMessage: String? = nil
+    var timer: Timer?
     
     // Функция для отправки запроса на генерацию картинки
     func generateImage(prompt: String) async {
@@ -28,9 +16,7 @@ class AiService: ObservableObject {
         let generateURLString =  "https://nexgendev.space/api/v2/generate?profileId=1&userId=11232323&prompt=\(prompt.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&lang=en"
         
         guard let url = URL(string: generateURLString) else {
-            DispatchQueue.main.async {
-                self.errorMessage = "Некорректный URL"
-            }
+            self.errorMessage = "Некорректный URL"
             return
         }
         
@@ -46,25 +32,18 @@ class AiService: ObservableObject {
                     let rootResponse = try decoder.decode(RootResponse.self, from: data)
                     
                     let requestId = rootResponse.data.requestId
-                    //let status = rootResponse.data.status
                     
                     await fetchResult(requestId: requestId)
                     
                     
                 } catch {
-                    DispatchQueue.main.async {
-                        self.errorMessage = "Ошибка декодирования JSON: \(error.localizedDescription)"
-                    }
+                    self.errorMessage = "Ошибка декодирования JSON: \(error.localizedDescription)"
                 }
             } else {
-                DispatchQueue.main.async {
-                    self.errorMessage = "Ошибка на сервере"
-                }
+                self.errorMessage = "Ошибка на сервере"
             }
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = error.localizedDescription
-            }
+            self.errorMessage = error.localizedDescription
         }
     }
 

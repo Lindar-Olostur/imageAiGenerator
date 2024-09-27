@@ -1,10 +1,3 @@
-//
-//  CreateView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 import TipKit
 import UIKit
@@ -12,7 +5,7 @@ import UIKit
 struct CreateView: View {
     @EnvironmentObject var aiService: AiService
     @EnvironmentObject var imageLoader: ImageLoader
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     @State var selectedStyle = GenStyle.art
     @State var positPrompt = ""
     @State var negatPrompt = ""
@@ -50,7 +43,7 @@ struct CreateView: View {
                 ScrollView {
                     VStack(alignment: .leading) {
                         Text("Create AI Image")
-                            .headerStyle(alignment: .center)
+                            .bigTextStyle(alignment: .center)
                             .padding(.top, 75)
                             .padding(.bottom, 20)
                         Text("Enter Prompt")
@@ -111,12 +104,12 @@ struct CreateView: View {
                                     Task {
                                         await aiService.generateImage(prompt: positPrompt)
                                     }
-                                    userSettings.testProgress = true
+                                    viewModel.testProgress = true
                                 } label: {
                                     Text("\(Image(systemName: "pencil.line")) Create")
                                         .font(.system(size: 18))
                                 }
-                                .buttonStyle(BigButton(width: .infinity, height: 38))
+                                .buttonStyle(MainButton(width: .infinity, height: 38))
                                 .padding(.horizontal)
                             }
                         }
@@ -173,7 +166,7 @@ struct CreateView: View {
                             ImageGalleryView(pictures: imageLoader.images)
                                 .transition(.move(edge: .leading))
                         } else {
-                            ImageGalleryView(pictures: userSettings.recentImages.reversed())
+                            ImageGalleryView(pictures: viewModel.recentImages.reversed())
                                 .transition(.move(edge: .trailing))
                         }
                     }
@@ -188,7 +181,6 @@ struct CreateView: View {
                         .offset(y: 10)
                 }
             }
-//            .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Image("aiLogo")
@@ -199,7 +191,7 @@ struct CreateView: View {
                 if !SubscriptionService.shared.hasSubs {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
-                            userSettings.openPaywall.toggle()
+                            viewModel.openPaywall.toggle()
                         } label: {
                             HStack {
                                 Image(systemName: "crown.fill")
@@ -209,7 +201,7 @@ struct CreateView: View {
                                     .bold()
                             }
                         }
-                        .buttonStyle(BigButton(width: 72, height: 24, opacity: 0.0))
+                        .buttonStyle(MainButton(width: 72, height: 24, opacity: 0.0))
                         .scaleEffect(0.8)
                     }
                 }
@@ -225,9 +217,6 @@ struct CreateView: View {
             // Закрыть клавиатуру
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
-//        .fullScreenCover(isPresented: $openPaywall) {
-//            PayWallView()
-//        }
         .onChange(of: positPrompt) {
             if positPrompt.isEmpty {
                 buttonDisabled = true
@@ -238,12 +227,12 @@ struct CreateView: View {
         .fullScreenCover(isPresented: $openPaywall) {
             PayWallView()
         }
-        .onReceive(userSettings.$openPaywall) { value in
+        .onReceive(viewModel.$openPaywall) { value in
             openPaywall = value
         }
-        .onAppear(perform: {
+//        .onAppear(perform: {
            // print("SUBS IS - \(SubscriptionService.shared.hasSubs)")
-        })
+//        })
     }
 }
 
@@ -251,7 +240,7 @@ struct CreateView: View {
     CreateView()
         .environmentObject(AiService())
         .environmentObject(ImageLoader())
-        .environmentObject(UserSettings())
+        .environmentObject(ViewModel())
 }
 
 

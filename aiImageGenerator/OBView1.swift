@@ -1,58 +1,59 @@
-//
-//  Onboarding2View.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 
-struct Onboarding2View: View {
+struct OBView1: View {
+    
     var body: some View {
         NavigationStack {
             ZStack {
-                OnboardingTemplate()
+                ZStack {
+                    Color.bgPrimary
+                    Image("")
+                        .frame(width: 340, height: 150)
+                        .background(Color.cPrimaryLight)
+                        .blur(radius: 37.5)
+                        .opacity(0.65)
+                }
+                .ignoresSafeArea()
                 VStack {
-                    Image("OB2")
+                    Image("OB1")
                         .resizable()
-                        //.scaledToFit()
                         .aspectRatio(3/5, contentMode: .fit)
-                        //.scaleEffect(0.85)
-                        //.offset(y: 50)
                         .padding(.horizontal, 40)
                         .overlay(
                             LinearGradient(
                                 gradient: Gradient(stops: [
                                     .init(color: Color.clear, location: 0),
-                                    .init(color: Color(.bgPrimary), location: 0.75)
+                                    .init(color: Color(.bgPrimary), location: 0.75001)
                                 ]),
-                                startPoint: UnitPoint(x: 0.5, y: 0.6),
+                                startPoint: UnitPoint(x: 0.501, y: 0.601),
                                 endPoint: .bottom
                             )
                         )
                     Spacer()
                 }
-                //.padding(.top, 30)
+                
                 VStack(alignment: .center) {
                     Spacer()
-                    Text("Explore a World of Creativity!")
-                        .headerStyle(alignment: .center)
+                    Text("Create Images with AI in Seconds!")
+                        .bigTextStyle(alignment: .center)
                         .multilineTextAlignment(.center)
-                        .padding(.bottom, 4)
                         .padding(.horizontal, 20)
+                        .padding(.bottom, 4)
                     
-                    Text("Discover thousands of images created by other users and get inspired by their ideas")
-                        .subHeaderStyle(alignment: .center)
+                    Text("Enter a description, and our AI will instantly turn your words into unique images")
+                        .grayTextStyle(alignment: .center)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 20)
                         .padding(.bottom, 30)
-                    NavigationLink(destination: Onboarding3View()) {
+                    
+                    NavigationLink(destination: OBView2()) {
                         Text("Continue")
                             .font(.system(size: 17))
                     }
-                    .buttonStyle(BigButton(width: .infinity, height: 38))
+                    .buttonStyle(MainButton(width: .infinity, height: 38))
                     .padding()
-                    PageControlView(numberOfPages: 4, currentPage: 1, activeColor: .white, inactiveColor: .white.opacity(0.3))
+                    
+                    PageControlView(numberOfPages: 4, currentPage: 0, activeColor: .white, inactiveColor: .white.opacity(0.3))
                 }
             }
         }
@@ -61,5 +62,5 @@ struct Onboarding2View: View {
 }
 
 #Preview {
-    Onboarding2View()
+    OBView1()
 }

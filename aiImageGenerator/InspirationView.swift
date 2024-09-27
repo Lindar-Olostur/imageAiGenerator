@@ -1,15 +1,8 @@
-//
-//  InspirationView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 
 struct InspirationView: View {
     @EnvironmentObject var imageLoader: ImageLoader
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         NavigationView {
@@ -19,7 +12,7 @@ struct InspirationView: View {
                         .ignoresSafeArea()
                     ScrollView(showsIndicators: false) {
                         Text("Find AI generated images")
-                            .headerStyle(alignment: .center)
+                            .bigTextStyle(alignment: .center)
                             .padding(.top, 75)
                             .padding(.bottom, 20)
                         ImageGalleryView(pictures: imageLoader.images)
@@ -36,7 +29,7 @@ struct InspirationView: View {
                 if !SubscriptionService.shared.hasSubs {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
-                            userSettings.openPaywall.toggle()
+                            viewModel.openPaywall.toggle()
                         } label: {
                             HStack {
                                 Image(systemName: "crown.fill")
@@ -46,7 +39,7 @@ struct InspirationView: View {
                                     .bold()
                             }
                         }
-                        .buttonStyle(BigButton(width: 72, height: 24, opacity: 0.0))
+                        .buttonStyle(MainButton(width: 72, height: 24, opacity: 0.0))
                         .scaleEffect(0.8)
                     }
                 }
@@ -64,7 +57,7 @@ struct InspirationView: View {
 #Preview {
     InspirationView()
         .environmentObject(ImageLoader())
-        .environmentObject(UserSettings())
+        .environmentObject(ViewModel())
 }
 
 

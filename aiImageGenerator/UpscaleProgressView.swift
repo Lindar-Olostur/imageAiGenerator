@@ -1,14 +1,7 @@
-//
-//  UpscaleProgressView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 11.09.2024.
-//
-
 import SwiftUI
 
 struct UpscaleProgressView: View {
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     @Binding var isOpen: Bool
     @State private var timer: Timer?
     @State private var progress = 0.0
@@ -50,24 +43,14 @@ struct UpscaleProgressView: View {
                                 .padding(.horizontal, 28)
                                 .multilineTextAlignment(.center)
                         }
-//                                Button("GET") {
-//                                    withAnimation {
-//                                        openGallery.toggle()
-//                                    }
-//
-//                                    //userSettings.testGeneration = true
-//                                    //userSettings.testProgress = false
-//                                    //self.presentationMode.wrappedValue.dismiss()
-//                                }
                         Spacer()
                         VStack {
                             Text("You want to go faster?")
                                 .font(.system(size: 15, weight: .regular))
                                 .foregroundColor(.white)
-                            //.padding(.top, 8)
                             Button {
-                                userSettings.testProgress = false
-                                userSettings.openPaywall.toggle()
+                                viewModel.testProgress = false
+                                viewModel.openPaywall.toggle()
                                 progress = 0.0
                             } label: {
                                 HStack {
@@ -78,7 +61,7 @@ struct UpscaleProgressView: View {
                                         .bold()
                                 }
                             }
-                            .buttonStyle(BigButton(width: 166, height: 20))
+                            .buttonStyle(MainButton(width: 166, height: 20))
                             .scaleEffect(0.8)
                         }
                         .padding(.bottom)
@@ -106,5 +89,5 @@ struct UpscaleProgressView: View {
 
 #Preview {
     UpscaleProgressView(isOpen: .constant(true))
-        .environmentObject(UserSettings())
+        .environmentObject(ViewModel())
 }

@@ -1,17 +1,9 @@
-//
-//  ProgressGenerationView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 
 struct ProgressGenerationView: View {
     @EnvironmentObject var aiGeneratorService: AiService
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     @State private var openGallery = false
-//    @State private var openPaywall = false
     @State var progress = 0.0
     
     var body: some View {
@@ -29,8 +21,7 @@ struct ProgressGenerationView: View {
                                 HStack {
                                     Spacer()
                                     Button {
-                                        userSettings.testProgress = false
-                                        //self.presentationMode.wrappedValue.dismiss()
+                                        viewModel.testProgress = false
                                     } label: {
                                         ZStack {
                                             BlurView(style: .dark)
@@ -56,24 +47,14 @@ struct ProgressGenerationView: View {
                                         .padding(.horizontal, 28)
                                         .multilineTextAlignment(.center)
                                 }
-//                                Button("GET") {
-//                                    withAnimation {
-//                                        openGallery.toggle()
-//                                    }
-//                                    
-//                                    //userSettings.testGeneration = true
-//                                    //userSettings.testProgress = false
-//                                    //self.presentationMode.wrappedValue.dismiss()
-//                                }
                                 Spacer()
                                 VStack {
                                     Text("You want to go faster?")
                                         .font(.system(size: 15, weight: .regular))
                                         .foregroundColor(.white)
-                                    //.padding(.top, 8)
                                     Button {
-                                        userSettings.testProgress = false
-                                        userSettings.openPaywall.toggle()
+                                        viewModel.testProgress = false
+                                        viewModel.openPaywall.toggle()
                                     } label: {
                                         HStack {
                                             Image(systemName: "crown.fill")
@@ -83,7 +64,7 @@ struct ProgressGenerationView: View {
                                                 .bold()
                                         }
                                     }
-                                    .buttonStyle(BigButton(width: 166, height: 20))
+                                    .buttonStyle(MainButton(width: 166, height: 20))
                                     .scaleEffect(0.8)
                                 }
                                 .padding(.bottom)
@@ -99,7 +80,7 @@ struct ProgressGenerationView: View {
                 progress = value
             }
             if value == 1.0 {
-                userSettings.recentImages += aiGeneratorService.genImages 
+                viewModel.recentImages += aiGeneratorService.genImages 
                 withAnimation {
                     openGallery.toggle()
                 }
@@ -115,7 +96,7 @@ struct ProgressGenerationView: View {
 #Preview {
     ProgressGenerationView()
         .environmentObject(AiService())
-        .environmentObject(UserSettings())
+        .environmentObject(ViewModel())
 }
 struct BackgroundClearView: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {

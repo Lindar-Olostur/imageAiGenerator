@@ -1,10 +1,3 @@
-//
-//  ImageDetailView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 import Photos
 import TipKit
@@ -12,23 +5,20 @@ import TipKit
 struct ImageDetailView: View {
     @EnvironmentObject var aiService: AiService
     @EnvironmentObject var imageLoader: ImageLoader
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var openPaywall = false
     @State private var openUpscale = false
     @State private var toastText = ""
     @State private var showToast = false
-//    @Binding var generatedImages: [Picture] = []
     let pasteboard = UIPasteboard.general
     var isFavorite = false
-    //var prompt = ""
     let imageUrl: URL
     @State var picture: Picture?
     var tip = InlineTip()
     
     
     var body: some View {
-//        NavigationStack {
             ZStack(alignment: .top) {
                 Color.bgPrimary.ignoresSafeArea()
                 VStack {
@@ -74,8 +64,8 @@ struct ImageDetailView: View {
                                         .cornerRadius(6, corners: .allCorners)
                                     }
                                     Button {
-                                        if userSettings.checkCollection(url: imageUrl) {
-                                            userSettings.removeImage(by: imageUrl)
+                                        if viewModel.checkCollection(url: imageUrl) {
+                                            viewModel.removeImage(by: imageUrl)
                                             toastText = "Removed from “Profile”"
                                             withAnimation(.easeIn(duration: 1)) {
                                                 showToast = true
@@ -83,7 +73,7 @@ struct ImageDetailView: View {
                                         } else {
                                             if let pic = picture {
                                                 DispatchQueue.main.async {
-                                                    userSettings.addImage(url: pic.url, prompt: pic.prompt, negativePrompt: pic.negativePrompt, size: pic.size, isUpscaled: pic.isUpscaled, model: pic.model, ratio: pic.ratio)
+                                                    viewModel.addImage(url: pic.url, prompt: pic.prompt, negativePrompt: pic.negativePrompt, size: pic.size, isUpscaled: pic.isUpscaled, model: pic.model, ratio: pic.ratio)
                                                 }
                                                 toastText = "Added to “Profile”"
                                                 animateToast()
@@ -92,8 +82,8 @@ struct ImageDetailView: View {
                                     } label: {
                                         ZStack {
                                             BlurView(style: .systemThinMaterialDark)
-                                            Image(systemName: userSettings.checkCollection(url: imageUrl) ? "heart.fill" : "heart")
-                                                .foregroundColor(userSettings.checkCollection(url: imageUrl) ? .cRed : .lQuoternary)
+                                            Image(systemName: viewModel.checkCollection(url: imageUrl) ? "heart.fill" : "heart")
+                                                .foregroundColor(viewModel.checkCollection(url: imageUrl) ? .cRed : .lQuoternary)
                                         }
                                         .frame(width: 36, height: 36)
                                         .cornerRadius(6, corners: .allCorners)
@@ -146,7 +136,7 @@ struct ImageDetailView: View {
                             InfosFieldView(picture: picture!)
                         }
                         Text("More images like this")
-                            .headerStyle(alignment: .leading)
+                            .bigTextStyle(alignment: .leading)
                             .padding(.top, 55)
                             .padding(.bottom, 8)
                         VStack {
@@ -175,7 +165,7 @@ struct ImageDetailView: View {
                             Text("\(Image(systemName: "arrow.up.backward.and.arrow.down.forward")) Upscale")
                                 .font(.system(size: 17))
                         }
-                        .buttonStyle(BigButton(width: .infinity, height: 38))
+                        .buttonStyle(MainButton(width: .infinity, height: 38))
                         .padding(.horizontal)
                     }
                 }
@@ -205,11 +195,11 @@ struct ImageDetailView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         DispatchQueue.main.async {
-                            if userSettings.testProgress {
+                            if viewModel.testProgress {
                                 presentationMode.wrappedValue.dismiss()
-                                userSettings.testProgress = false
+                                viewModel.testProgress = false
                             }
-                            userSettings.openPaywall.toggle()
+                            viewModel.openPaywall.toggle()
                         }
                     } label: {
                         HStack {
@@ -220,7 +210,7 @@ struct ImageDetailView: View {
                                 .bold()
                         }
                     }
-                    .buttonStyle(BigButton(width: 72, height: 24, opacity: 0.0))
+                    .buttonStyle(MainButton(width: 72, height: 24, opacity: 0.0))
                     .scaleEffect(0.8)
                 }
             }
@@ -274,13 +264,13 @@ struct ImageDetailView: View {
             }
         }
     func changeUpscale(_ upscale: Bool, _ url: URL) {
-        if let existingIndex = userSettings.imageCollection.firstIndex(where: { $0.url == url }) {
-            userSettings.imageCollection[existingIndex].isUpscaled = upscale
-            userSettings.saveUserToUserDefaults()
+        if let existingIndex = viewModel.imageCollection.firstIndex(where: { $0.url == url }) {
+            viewModel.imageCollection[existingIndex].isUpscaled = upscale
+            viewModel.saveToUD()
         } else {
-            if let existingIndex = userSettings.recentImages.firstIndex(where: { $0.url == url }) {
-                userSettings.recentImages[existingIndex].isUpscaled = upscale
-                userSettings.saveUserToUserDefaults()
+            if let existingIndex = viewModel.recentImages.firstIndex(where: { $0.url == url }) {
+                viewModel.recentImages[existingIndex].isUpscaled = upscale
+                viewModel.saveToUD()
             } else {
                 if let existingIndex = aiService.genImages.firstIndex(where: { $0.url == url }) {
                     aiService.genImages[existingIndex].isUpscaled = upscale
@@ -309,7 +299,7 @@ struct ImageDetailView: View {
     ImageDetailView(imageUrl: URL(string: "https://via.placeholder.com/300")!, picture: nil)
         .environmentObject(AiService())
         .environmentObject(ImageLoader())
-        .environmentObject(UserSettings())
+        .environmentObject(ViewModel())
 }
 
 struct BackButton: View {

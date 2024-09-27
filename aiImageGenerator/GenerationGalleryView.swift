@@ -1,21 +1,12 @@
-//
-//  GenerationGalleryView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 
 struct GenerationGalleryView: View {
     @EnvironmentObject var aiService: AiService
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     @State private var openPaywall = false
     @Binding var openGallery: Bool
-    //@State var pictures: [Picture] = []
     
     var body: some View {
-        //ImageGalleryView()
         NavigationStack {
         ZStack {
             Color.bgPrimary
@@ -33,7 +24,7 @@ struct GenerationGalleryView: View {
                     }
                     .navigationBarBackButtonHidden(true)
                     .navigationBarItems(leading: Button(action : {
-                        userSettings.testProgress = false
+                        viewModel.testProgress = false
                         aiService.progress = 0.0
                     }){
                         Text("Close")
@@ -49,7 +40,7 @@ struct GenerationGalleryView: View {
                         Text("\(Image(systemName: "arrow.triangle.2.circlepath")) Recreate")
                             .font(.system(size: 17))
                     }
-                    .buttonStyle(BigButton(width: .infinity, height: 38))
+                    .buttonStyle(MainButton(width: .infinity, height: 38))
                     .padding()
                 }
                 .navigationTitle("Select Result")
@@ -58,8 +49,8 @@ struct GenerationGalleryView: View {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button {
                                 DispatchQueue.main.async {
-                                    userSettings.testProgress = false
-                                    userSettings.openPaywall.toggle()
+                                    viewModel.testProgress = false
+                                    viewModel.openPaywall.toggle()
                                     aiService.progress = 0.0
                                 }
                             } label: {
@@ -71,29 +62,18 @@ struct GenerationGalleryView: View {
                                         .bold()
                                 }
                             }
-                            .buttonStyle(BigButton(width: 72, height: 24))
+                            .buttonStyle(MainButton(width: 72, height: 24))
                             .scaleEffect(0.8)
                         }
                     }
                 }
-//                .onReceive(aiService.$errorMessage) { value in
-//                    userSettings.testProgress = false
-//                }
-                //Text("\(aiService.generatedImageData.map {$0.url})")
-                //ImageGalleryView()
             }
-//            .fullScreenCover(isPresented: $openPaywall) {
-//                PayWallView()
-//            }
         }
-//        .onAppear(perform: {
-//            pictures = aiService.genImages
-//        })
     }
 }
 
 #Preview {
     GenerationGalleryView(openGallery: .constant(true))
         .environmentObject(AiService())
-        .environmentObject(UserSettings())
+        .environmentObject(ViewModel())
 }

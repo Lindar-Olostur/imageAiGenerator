@@ -1,10 +1,3 @@
-//
-//  ImageLoader.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 
 class ImageLoader: ObservableObject {
@@ -61,16 +54,3 @@ class ImageLoader: ObservableObject {
         }.resume()
     }
 }
-
-
-
-//@Published var imageURLs: [String] = []
-//
-//    func fetchImages() {
-//        // Генерируем 20 случайных картинок
-//        for _ in 1...20 {
-//            let randomSize = Int.random(in: 200...300)
-//            let imageURL = "https://picsum.photos/\(randomSize)"
-//            imageURLs.append(imageURL)
-//        }
-//    }

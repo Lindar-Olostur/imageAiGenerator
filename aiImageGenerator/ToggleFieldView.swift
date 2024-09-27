@@ -1,10 +1,3 @@
-//
-//  ToggleFieldView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 09.09.2024.
-//
-
 import SwiftUI
 
 struct ToggleFieldView: View {

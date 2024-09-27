@@ -1,16 +1,8 @@
-//
-//  SettingsRow.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 12.09.2024.
-//
-
 import SwiftUI
 
 struct SettingsRow: View {
     var iconName: String
     var title: String
-    //let onTap: () -> Void
     
     var body: some View {
         HStack {

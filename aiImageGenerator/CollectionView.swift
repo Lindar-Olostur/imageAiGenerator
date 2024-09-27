@@ -1,17 +1,9 @@
-//
-//  CollectionView.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 
 struct CollectionView: View {
     @State private var showPhotoPicker = false
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var viewModel: ViewModel
     @State private var pickedImage: UIImage?
-    //@State var pictures: [Picture] = []
     
     var body: some View {
         NavigationView {
@@ -19,10 +11,10 @@ struct CollectionView: View {
                 ZStack(alignment: .top) {
                     Color.bgPrimary
                         .ignoresSafeArea()
-                    if userSettings.imageCollection.isEmpty {
+                    if viewModel.imageCollection.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Collection")
-                                .headerStyle(alignment: .center)
+                                .bigTextStyle(alignment: .center)
                                 .padding(.top, 75)
                                 .padding(.bottom, 20)
                             EmptyCollectionView()
@@ -31,11 +23,11 @@ struct CollectionView: View {
                         ScrollView(showsIndicators: false) {
                             VStack {
                                 Text("Collection")
-                                    .headerStyle(alignment: .center)
+                                    .bigTextStyle(alignment: .center)
                                     .padding(.top, 75)
                                     .padding(.bottom, 40)
                                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
-                                    ForEach(userSettings.imageCollection.reversed()) { picture in
+                                    ForEach(viewModel.imageCollection.reversed()) { picture in
                                         NavigationLink(destination: ImageDetailView(imageUrl: picture.url, picture: picture)) {
                                             ZStack {
                                                 ImageCellView(picture: picture)
@@ -48,14 +40,10 @@ struct CollectionView: View {
                                 
                             }
                         }
-//                        .refreshable {
-//                            imageLoader.fetchImages()
-//                        }
                     }
                         
                 }
             }
-//            .toolbarBackground(.bgDim, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
@@ -70,7 +58,7 @@ struct CollectionView: View {
                 if !SubscriptionService.shared.hasSubs {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
-                            userSettings.openPaywall.toggle()
+                            viewModel.openPaywall.toggle()
                         } label: {
                             HStack {
                                 Image(systemName: "crown.fill")
@@ -80,7 +68,7 @@ struct CollectionView: View {
                                     .bold()
                             }
                         }
-                        .buttonStyle(BigButton(width: 72, height: 24, opacity: 0.0))
+                        .buttonStyle(MainButton(width: 72, height: 24, opacity: 0.0))
                         .scaleEffect(0.8)
                     }
                 }
@@ -91,13 +79,7 @@ struct CollectionView: View {
                     }
                 }
             }
-//            .fullScreenCover(isPresented: $openPaywall) {
-//                PayWallView()
-//            }
         }
-//        .onAppear(perform: {
-//            pictures = userSettings.imageCollection.reversed()
-//        })
         .sheet(isPresented: $showPhotoPicker) {
             PhotoPicker { image in
                 self.pickedImage = image
@@ -109,10 +91,6 @@ struct CollectionView: View {
         }
     }
     func savePicture(image: UIImage) {
-        // Преобразование UIImage в URL нужно добавить здесь
-        // Например, сохранить изображение в файловую систему и получить URL
-
-        // Пример кода для сохранения изображения:
         let fileManager = FileManager.default
         guard let data = image.jpegData(compressionQuality: 1) else { return }
 
@@ -131,7 +109,7 @@ struct CollectionView: View {
                 model: "Your model",
                 ratio: "\(image.size.width / image.size.height)"
             )
-            userSettings.imageCollection.append(picture)
+            viewModel.imageCollection.append(picture)
         } catch {
             print("Error saving image: \(error)")
         }
@@ -140,6 +118,5 @@ struct CollectionView: View {
 
 #Preview {
     CollectionView()
-//        .environmentObject(ImageLoader())
-        .environmentObject(UserSettings())
+        .environmentObject(ViewModel())
 }

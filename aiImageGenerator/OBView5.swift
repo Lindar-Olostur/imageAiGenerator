@@ -1,38 +1,35 @@
-//
-//  Onboarding5View.swift
-//  aiImageGenerator
-//
-//  Created by Lindar Olostur on 08.09.2024.
-//
-
 import SwiftUI
 import UserNotifications
 
-struct Onboarding5View: View {
-    @EnvironmentObject var userSettings: UserSettings
-    @State private var goToNextOnboarding = false
-    @State private var showAlert = false
+struct OBView5: View {
+    @EnvironmentObject var viewModel: ViewModel
+    @State private var nextViewShow = false
     @State private var permissionGranted = false
     
     var body: some View {
         ZStack {
-            OnboardingTemplate()
+            ZStack {
+                Color.bgPrimary
+                Image("")
+                    .frame(width: 340, height: 150)
+                    .background(Color.cPrimaryLight)
+                    .blur(radius: 37.5)
+                    .opacity(0.65)
+            }
+            .ignoresSafeArea()
             VStack {
                 ZStack {
                     Image("OB5")
                         .resizable()
-                    //.scaledToFit()
                         .aspectRatio(3/5, contentMode: .fit)
-                    //.scaleEffect(0.85)
-                    //.offset(y: 50)
                         .padding(.horizontal, 40)
                         .overlay(
                             LinearGradient(
                                 gradient: Gradient(stops: [
                                     .init(color: Color.clear, location: 0),
-                                    .init(color: Color(.bgPrimary), location: 0.75)
+                                    .init(color: Color(.bgPrimary), location: 0.75000005)
                                 ]),
-                                startPoint: UnitPoint(x: 0.5, y: 0.6),
+                                startPoint: UnitPoint(x: 0.50005, y: 0.60005),
                                 endPoint: .bottom
                             )
                         )
@@ -44,14 +41,13 @@ struct Onboarding5View: View {
                 }
                 Spacer()
             }
-            //.padding(.top, 30)
             VStack(alignment: .center) {
                 HStack {
                     Spacer()
                     Button {
-                        if userSettings.isOnboardingCompleted {
+                        if viewModel.isOBoardingFinished {
                             print("Все выходим")
-                            userSettings.finishOB()
+                            viewModel.finishOB()
                         } else {
                             print("CHECK SUBS")
                             checkSubscribe()
@@ -69,13 +65,13 @@ struct Onboarding5View: View {
                 }
                 Spacer()
                 Text("Stay Connected!")
-                    .headerStyle(alignment: .center)
+                    .bigTextStyle(alignment: .center)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 4)
                     .padding(.horizontal, 20)
                 
                 Text("Enable notifications to be the first to know about new features and get inspiration for new creations")
-                    .subHeaderStyle(alignment: .center)
+                    .grayTextStyle(alignment: .center)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
                     .padding(.bottom, 30)
@@ -85,7 +81,7 @@ struct Onboarding5View: View {
                     Text("Turn on notifications")
                         .font(.system(size: 17))
                 })
-                .buttonStyle(BigButton(width: .infinity, height: 38))
+                .buttonStyle(MainButton(width: .infinity, height: 38))
                 .padding()
                 PageControlView(numberOfPages: 4, currentPage: 2, activeColor: .white, inactiveColor: .white.opacity(0.3)).opacity(0.0)
             }
@@ -94,7 +90,7 @@ struct Onboarding5View: View {
             checkNotificationPermissionStatus()
         }
         .navigationBarBackButtonHidden(true)
-        .fullScreenCover(isPresented: $goToNextOnboarding) {
+        .fullScreenCover(isPresented: $nextViewShow) {
             PayWallView()
         }
     }
@@ -109,19 +105,13 @@ struct Onboarding5View: View {
                 permissionGranted = granted
                 checkSubscribe()
             }
-            
-            if granted {
-              //  print("Notification permission granted.")
-            } else {
-              //  print("Notification permission denied.")
-            }
         }
     }
     func checkSubscribe() {
         if SubscriptionService.shared.hasSubs {
-            userSettings.finishOB()
+            viewModel.finishOB()
         } else {
-            goToNextOnboarding.toggle()
+            nextViewShow.toggle()
         }
     }
     
@@ -129,12 +119,11 @@ struct Onboarding5View: View {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
                 permissionGranted = settings.authorizationStatus == .authorized
-               // print("PERMIS Status: \(permissionGranted)")
             }
         }
     }
 }
 
 #Preview {
-    Onboarding5View()
+    OBView5()
 }
